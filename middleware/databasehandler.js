@@ -9,6 +9,7 @@ function DataBaseHandler(config){
 				 	if(err){
 				 		console.log(err);
 				 		res.send(err);
+				 		res.end();
 				 	}
 				 	req.models = db.models;
 				 	req.db = db;

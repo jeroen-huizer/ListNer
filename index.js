@@ -4,12 +4,7 @@ var bodyparser = require('body-parser');
 var actionHandler = require('./middleware/actionhandler')
 var databaseHandler = require('./middleware/databasehandler')
 
-var database = databaseHandler({	
-					host: process.env.HOST || 'localhost',
-					port: process.env.PORT || 5432,
-					schema: process.env.SCHEMA || 'listner-test',
-					user: process.env.USER || 'postgres',
-					pass: process.env.PASS || 'pass'})
+var database = databaseHandler(process.env.DATABASE_URL || 'postgress://postgres:pass@localhost:5432/listner-test');
 
 var handleBars = exphbs({  
 				  	defaultLayout: 'main',

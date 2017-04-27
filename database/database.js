@@ -21,15 +21,15 @@ function setup(db, callback){
 
 }
 
-module.exports = function({host, port, schema, user, pass}, callback){
+module.exports = function(database_url, callback){
 	// Return existing connection
 	if(connection) return callback(null, connection);
 
 	// Create new connection
-	var connectionString = 'postgres://'+user+':'+pass+'@'+host+':'+port+'/'+schema;
-	console.log('Connecting to: ' + connectionString);
+	// var connectionString = 'postgres://'+user+':'+pass+'@'+host+':'+port+'/'+schema;
+	console.log('Connecting to: ' + database_url);
 
-	orm.connect(connectionString, function (err, db) {
+	orm.connect(database_url, function (err, db) {
 		if (err && callback) return callback(err);
 		if (err) throw err;
 
