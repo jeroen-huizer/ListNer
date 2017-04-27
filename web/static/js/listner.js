@@ -42,7 +42,7 @@ var recog = (function($, button, list){
 		if(item && item.toLowerCase() == 'stop')
 			toggleListen();
 		else if(item)	
-			list.addItem(item);
+			list.add(item);
 	}
 
 	function startListening(){
