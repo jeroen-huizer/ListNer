@@ -9,7 +9,11 @@ module.exports = function(req, res){
 		case "get":
 			get(req, res);
 			break;
-		res.status(404).send();	
+		case "delete":
+			remove(req, res);
+			break;
+		default: 
+			res.status(404).send();	
 	}
 }
 
@@ -41,6 +45,33 @@ function save(req, res){
 			
 }
 
+function remove(req, res){
+
+	var itemModel = req.models.item;
+	var itemPassed = req.body.item;
+
+	var itemToFind = {	name: itemPassed.name,
+						list: itemPassed.list};
+
+	console.log('Deleting item: '+JSON.stringify(itemToFind));
+
+	itemModel.find(itemToFind,
+		function(err, items){
+			if(items.length){
+				items[0].remove(function(err){
+					errHandler(err, res);
+					res.status(200).send();		
+				})
+			}
+			else{
+				res.status(200).send();		
+			}
+
+		});
+
+
+}
+
 function get(req, res){
 
 	var itemModel = req.models.item;
@@ -56,6 +87,10 @@ function get(req, res){
 }
 
 function errHandler(err, res){
-	if(err) 
+	if(err){
+		console.log(err);
 		res.status(404).send(err);
+		res.end();
+	} 
+
 }

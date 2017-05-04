@@ -4,7 +4,7 @@ var bodyparser = require('body-parser');
 var actionHandler = require('./middleware/actionhandler')
 var databaseHandler = require('./middleware/databasehandler')
 
-var database = databaseHandler(process.env.DATABASE_URL || 'postgress://postgres:pass@localhost:5432/listner-test');
+var database = databaseHandler(process.env.DATABASE_URL || 'postgres://postgres:pass@localhost:5432/listner-test');
 
 var handleBars = exphbs({  
 				  	defaultLayout: 'main',
@@ -26,11 +26,11 @@ app.use(express.static(__dirname + '/web/static'));	// Static routes
 app.use(database); // Add database handle to each req
 app.get('/', (req, res) => {res.render('pages/home');});
 app.get('/contact', (req, res) => {res.render('pages/contact');});
-app.get('/test', (req, res) => {res.render('pages/test')});
+app.get('/test', (req, res) => {res.render('pages/test', {layout: 'blank'})});
 app.use('/action', jsonParser, actionHandler)
 app.get('/stop', exitHandler);
 
-app.listen(app.get('port'), function() {console.log('Running on port', app.get('port'));});
+app.listen(app.get('port'), function() {console.log('APP: Running on port', app.get('port'));});
 
 function exitHandler(req, res){
 	console.log('Stop requested'); 

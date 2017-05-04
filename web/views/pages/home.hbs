@@ -14,7 +14,7 @@
           <div class="input-group-btn">
             <button id="listen" class="btn btn-primary" type="button"><i class="fa fa-microphone"></i></button>
           </div>
-          <input id="maininput" type="text" class="form-control" placeholder="Wat wil je toevoegen?" aria-describedby="sizing-addon1">
+          <input id="maininput" type="text" class="form-control" placeholder="Wat wil je toevoegen?" aria-describedby="sizing-addon1" data-role="none">
         </div>
         </p>
 
@@ -30,3 +30,31 @@
     </div>
   </div>
 </div>
+
+<script>
+
+      // Load a list
+
+      (function(core){
+      core.views = core.views || {};
+      var listView = core.views.listView = new core.ListView();
+      var itemView = core.views.itemView = new core.ItemView(core.views.listView);
+
+      core.List.load(1, function(err, list){
+        if(err) return 
+
+        core.data = core.data || {};
+        core.data.list = list;
+        
+        for(i in list.items){
+          itemView.renderNewItem(list.items[i]);
+        }
+
+        listView.sort();
+
+      });
+    })(core);
+
+  
+
+</script>
