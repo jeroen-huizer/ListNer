@@ -23,7 +23,6 @@
 		this.$mainInput =  $('#maininput');
 		this.$recordButton = $('#recordbutton');
 	
-
 		this.$mainInput.on('keypress', enterOnInput);
 		this.$recordButton.on('click', toggleRecording);
 
@@ -67,6 +66,19 @@
 
 	ItemView.prototype.removeItem = function(id){
 		$('#'+id).remove();
+	}
+
+	ItemView.prototype.toggleListner = function(){
+		if(this.$recordButton.hasClass('active')){
+			this.$recordButton.removeClass('btn-danger');
+			this.$recordButton.removeClass('active');
+			this.$recordButton.addClass('btn-primary');
+		}
+		else{
+			this.$recordButton.removeClass('btn-primary');
+			this.$recordButton.addClass('btn-danger');
+			this.$recordButton.addClass('active');
+		}
 	}
 	
 	function enterOnInput(e){
@@ -133,16 +145,8 @@
 	}
 
 	function toggleRecording(){
-		if(ux.recordButton.hasClass('active')){
-			ux.recordButton.removeClass('btn-danger');
-			ux.recordButton.removeClass('active');
-			ux.recordButton.addClass('btn-primary');
-		}
-		else{
-			ux.recordButton.removeClass('btn-primary');
-			ux.recordButton.addClass('btn-danger');
-			ux.recordButton.addClass('active');
-		}
+		core.tools.listner.toggleListen();
+		core.views.itemView.toggleListner();
 	}
 
 	window.core = window.core || {};

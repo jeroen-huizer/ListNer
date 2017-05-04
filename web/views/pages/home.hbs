@@ -12,7 +12,7 @@
         <p>
         <div class="input-group input-group-lg">
           <div class="input-group-btn">
-            <button id="listen" class="btn btn-primary" type="button"><i class="fa fa-microphone"></i></button>
+            <button id="recordbutton" class="btn btn-primary" type="button"><i class="fa fa-microphone"></i></button>
           </div>
           <input id="maininput" type="text" class="form-control" placeholder="Wat wil je toevoegen?" aria-describedby="sizing-addon1" data-role="none">
         </div>
@@ -35,22 +35,53 @@
 
       // Load a list
 
-      (function(core){
+    (function(core){ 
+
+      core.tools = core.tools || {};
       core.views = core.views || {};
+
+      // Create views
       var listView = core.views.listView = new core.ListView();
       var itemView = core.views.itemView = new core.ItemView(core.views.listView);
 
+
+      // Load a list
       core.List.load(1, function(err, list){
         if(err) return 
 
+        // Set the data
         core.data = core.data || {};
         core.data.list = list;
         
+        // Update the views
         for(i in list.items){
           itemView.renderNewItem(list.items[i]);
         }
-
         listView.sort();
+
+        // Attach speech recognition to list
+        core.tools.listner = new core.listner(listnerCallBack);
+
+        function listnerCallBack(msg){
+          //TODO: Move to a controller
+          // Same code as views -> onEnter
+
+          var newItem = new core.Item(msg);
+          var existingItem = core.data.list.get(newItem.guid);
+
+          if(existingItem){
+            core.data.list.add(existingItem);
+            core.views.itemView.renderUpdatedItem(existingItem);
+            existingItem.commit();
+          }
+          else{
+            core.data.list.add(newItem);
+            core.views.itemView.renderNewItem(newItem);
+            newItem.commit();
+          }
+
+          core.views.listView.sort();
+        }
 
       });
     })(core);
