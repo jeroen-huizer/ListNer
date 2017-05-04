@@ -11,6 +11,10 @@
 	ListView.prototype.sort = function(){
 		// Just resorts all items that are in the view
 		this.$list.find('a').sort(function(a, b){return a.dataset.rank > b.dataset.rank}).appendTo(this.$list);
+		if(this.$list.find('a').length)
+			this.$list.show();
+		else
+			this.$list.hide();
 	}
 
 	function ItemView(listView){
@@ -66,6 +70,7 @@
 
 	ItemView.prototype.removeItem = function(id){
 		$('#'+id).remove();
+		core.views.listView.sort();
 	}
 
 	ItemView.prototype.toggleListner = function(){
