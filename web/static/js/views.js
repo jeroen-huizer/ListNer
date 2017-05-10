@@ -10,7 +10,9 @@
 
 	ListView.prototype.sort = function(){
 		// Just resorts all items that are in the view
-		this.$list.find('a').sort(function(a, b){return a.dataset.rank > b.dataset.rank}).appendTo(this.$list);
+		this.$list.find('a').sort(function(a, b){return a.dataset.rank - b.dataset.rank}).appendTo(this.$list);
+
+		// console.log(list)
 		if(this.$list.find('a').length)
 			this.$list.show();
 		else
@@ -45,7 +47,7 @@
 		}
 
 		//itemView.click(clickItem);
-		itemView.swipe({swipeRight:  swipeItemRight, swipeLeft: swipeItemLeft, tap: clickItem});
+		itemView.swipe({swipeRight:  swipeItemRight, swipeLeft: swipeItemLeft, allowPageScroll:"vertical", tap: clickItem});
 	
 		var badgeView = $('<span>').text(item.count>1?item.count:'').addClass('badge')
 		badgeView.appendTo(itemView);
