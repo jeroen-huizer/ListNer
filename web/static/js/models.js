@@ -95,6 +95,7 @@ var models = (function(window, $){
 		}
 		else{
 			item.list = this.id;
+			item.rank = Object.keys(this.items).length + 1;
 			this.items[item.guid] = item;
 		}
 

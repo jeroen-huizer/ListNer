@@ -10,7 +10,7 @@
 
 	ListView.prototype.sort = function(){
 		// Just resorts all items that are in the view
-		this.$list.find('a').sort(function(a, b){return a.dataset.rank - b.dataset.rank}).appendTo(this.$list);
+		this.$list.find('a').sort(function(a, b){return -(a.dataset.rank - b.dataset.rank)}).appendTo(this.$list);
 
 		// console.log(list)
 		if(this.$list.find('a').length)
@@ -119,15 +119,14 @@
 		switch(item.status){
 			case core.Item.Status.NEW:
 				item.status = core.Item.Status.DONE;
-				item.rank = 2; //TODO: Elaborate ranking
+				item.rank = -1*item.rank; //TODO: Elaborate ranking
 				break;
 			case core.Item.Status.DONE:
 				item.status = core.Item.Status.NEW;
-				item.rank = 1;
+				item.rank = -1*item.rank;
 				break;
 			default:
-				item.status = core.Item.Status.NEW;
-				item.rank = 1;
+				break;
 		}
 
 		item.commit();
