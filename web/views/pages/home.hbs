@@ -2,7 +2,7 @@
   <div class="site-wrapper-inner">
     <div class="cover-container">
 
-      {{> nav_home }}
+      <!--{{> nav_home }} -->
 
       <div class="inner cover">
         <h1 class="cover-heading">Maak een lijstje</h1>
@@ -25,7 +25,7 @@
         
       </div>
 
-      {{> foot }}
+      <!-- {{> foot }} -->
 
     </div>
   </div>
@@ -52,6 +52,9 @@
         // Set the data
         core.data = core.data || {};
         core.data.list = list;
+
+        // Start polling for changes
+        core.data.list.poll();
         
         // Update the views
         for(i in list.items){

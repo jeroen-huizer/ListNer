@@ -87,11 +87,13 @@ var models = (function(window, $){
 	}
 
 	List.prototype.add = function(item){
-		var exists = this.items[item.guid]
+		var existingItem = this.items[item.guid]
 
-		if(exists){
-			this.items[item.guid].count += 1;
-			item = this.items[item.guid];
+		if(existingItem){
+			existingItem.count = item.count ? item.count : existingItem.count + 1;
+			existingItem.rank = item.rank;
+			existingItem.status = item.status;
+			item = existingItem;
 		}
 		else{
 			item.list = this.id;
@@ -124,6 +126,44 @@ var models = (function(window, $){
 	List.prototype.commit = function(callback){
 		for(guid in Object.keys(this.items))
 			this.items[guid].commit();
+	}
+
+	List.prototype.poll = function(){
+
+		var self = this; // Get current scope in timeout scope
+		var action = {"action": "get", "list": self.id};
+
+		$.ajax({
+				context: self,
+				method: "POST", 
+				url: "action", 
+				contentType: "application/json", 
+				processData: false, 
+				data: JSON.stringify(action)})
+			.done(
+			function(data, status){
+					if(data.length){
+						for(i in data){
+							var newItem = new Item(data[i].name, data[i].count, data[i].status, data[i].rank, self.id);
+
+							if(self.items[newItem.guid]){
+								var item = self.add(newItem)
+								core.views.itemView.renderUpdatedItem(item); // TODO: reference to view does not belong here?
+							}
+							else{
+								self.add(newItem)
+								core.views.itemView.renderNewItem(newItem)	
+							}
+
+						}
+					}
+					core.views.listView.sort();
+					setTimeout(function(){self.poll()}, 2500);
+				})
+	}
+
+	List.prototype.processPoll =function(data, status){
+		console.log(this);
 	}
 
 	List.load = function(id, callback){
