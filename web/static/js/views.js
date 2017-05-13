@@ -114,6 +114,9 @@
 	}
 
 	function clickItem(e){
+		if(!e.cancelable)
+			return;
+
 		var item = core.data.list.get($(this).attr('id'));
 
 		switch(item.status){
@@ -123,7 +126,7 @@
 				break;
 			case core.Item.Status.DONE:
 				item.status = core.Item.Status.NEW;
-				item.rank = -1*item.rank;
+				item.rank = Math.abs(item.rank);
 				break;
 			default:
 				break;

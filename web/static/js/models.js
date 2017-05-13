@@ -23,7 +23,7 @@ var models = (function(window, $){
 		this.name = name;
 		this.count = count || 1;
 		this.status = Item.Status.get(status) || Item.Status.NEW; // ["new", "done"]
-		this.rank = rank || 1;
+		this.rank = rank;
 		this.list = list;
 
 		this.guid = Util.hash(this.name);
@@ -95,7 +95,7 @@ var models = (function(window, $){
 		}
 		else{
 			item.list = this.id;
-			item.rank = Object.keys(this.items).length + 1;
+			item.rank = item.rank ? item.rank : Object.keys(this.items).length + 1;
 			this.items[item.guid] = item;
 		}
 
