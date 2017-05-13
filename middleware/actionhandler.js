@@ -53,7 +53,7 @@ function remove(req, res){
 	var itemToFind = {	name: itemPassed.name,
 						list: itemPassed.list};
 
-	console.log('Deleting item: '+JSON.stringify(itemToFind));
+	// console.log('Deleting item: '+JSON.stringify(itemToFind));
 
 	itemModel.find(itemToFind,
 		function(err, items){
@@ -75,7 +75,7 @@ function remove(req, res){
 function get(req, res){
 
 	var itemModel = req.models.item;
-	console.log('Requested items on list: '+req.body.list);
+	// console.log('Requested items on list: '+req.body.list);
 
 	itemModel.find({
 			list: req.body.list
