@@ -1,60 +1,51 @@
+(function(core){
 
+	function listner(resultCallback){
+		this.started = false; //Public
+		this.callback = resultCallback;
 
+		// Setup speech recognition
+		this.recognition = new webkitSpeechRecognition();
 
-if (typeof lnux === 'undefined') {
-  throw new Error('Listner.js requires LNUX')
-}
-else{
+		//Settings
+		this.recognition.continuous = false;
+		this.recognition.lang = 'nl-NL';
+		this.recognition.interimResults = false;
 
-var recog = (function($, button, list){
+		// Events
+		this.recognition.onresult = this.onresult.bind(this);
+		this.recognition.onspeechend = this.stopListening.bind(this);;
+		this.recognition.onend = this.startListening.bind(this);
 
-	var recog = {};
-	recog.started = false; //Public
-
-	button.on('click', toggleListen);
-
-	// Setup speech recognition
-	var recognition = new webkitSpeechRecognition();
-
-	//Settings
-	recognition.continuous = false;
-	recognition.lang = 'nl-NL';
-	recognition.interimResults = false;
-
-	// Events
-	recognition.onresult = onresult;
-	recognition.onspeechend = stopListening;
-	recognition.onend = startListening;
-
-	function toggleListen(){
-		if(!recog.started){
-			recog.started = true;
-			startListening();
+	}
+	
+	listner.prototype.toggleListen = function(){
+		if(!this.started){
+			this.started = true;
+			this.startListening();
 		}
 		else{
-			recog.started = false;			
-			stopListening();
+			this.started = false;			
+			this.stopListening();
 		}
 	}
 
-	function onresult({results}){
-		var item = results[0][0].transcript;
-		if(item && item.toLowerCase() == 'stop')
-			toggleListen();
-		else if(item)	
-			list.addItem(item);
+	listner.prototype.onresult = function({results}){
+		var transcript = results[0][0].transcript;
+		if(transcript)	
+			this.callback(transcript);
 	}
 
-	function startListening(){
-		if(recog.started)
-			recognition.start();
+	listner.prototype.startListening = function(){
+		if(this.started)
+			this.recognition.start();
 	}
 
-	function stopListening(){
-		recognition.stop();
+	listner.prototype.stopListening = function(){
+		this.recognition.stop();
 	}
 
-	return recog;
+	window.core = window.core || {};
+	window.core.listner = listner;
 
-
-})(jQuery, lnux.recordButton, lnux.list)}
+})(window)
