@@ -26,6 +26,9 @@ var models = (function(window, $){
 		this.status = Item.Status.get(status) || Item.Status.NEW; // ["new", "done"]
 		this.rank = rank;
 		this.list = list;
+
+		// not persisted
+		this.selected = false;
 	}
 
 	Item.Status = {NEW: "new", DONE: "done"};
@@ -60,7 +63,7 @@ var models = (function(window, $){
 	}
 
 	Item.prototype.del = function(callback){
-		var action = {"action": "delete", "model": "item", "item": {"id": this.id}};
+		var action = {"action": "delete", "model": "item", "data": {"id": this.id}};
 
 		$.ajax({method: "POST",
 				url: "action",
@@ -114,6 +117,26 @@ var models = (function(window, $){
 		delete item;
 	}
 
+	List.prototype.deleteItems = function(items, callback){
+
+		var action = {"action": "delete", "model": "item", "data": items};
+
+		$.ajax({method: "POST",
+				url: "action",
+				contentType: "application/json",
+				processData: false,
+				data: JSON.stringify(action)})
+			.done(
+				function(data, status){
+					if(status != "success"){
+						callback && callback(new Error('Could not delete objects.'))
+					}
+					else{
+						callback && callback();
+					}
+				});
+	}
+
 	List.prototype.decrease = function(id){
 		var item = this.items.find(function(obj){return obj.id == id });
 		if(item && item.count > 1){
@@ -153,21 +176,21 @@ var models = (function(window, $){
 
 							if(self.items[newItem.id]){
 								var item = self.add(newItem)
-								core.views.itemView.renderUpdatedItem(item); // TODO: reference to view does not belong here?
+								core.views.itemView.render(item); // TODO: reference to view does not belong here?
 							}
 							else{
 								self.add(newItem)
-								core.views.itemView.renderNewItem(newItem)
+								core.views.itemView.render(newItem)
 							}
 
 						}
 					}
-					core.views.listView.sort();
+					core.views.itemView.sort();
 					setTimeout(function(){self.poll()}, 2500);
 				})
 	}
 
-	List.prototype.processPoll =function(data, status){
+	List.prototype.processPoll = function(data, status){
 		console.log(this);
 	}
 

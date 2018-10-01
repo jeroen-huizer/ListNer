@@ -1,0 +1,16 @@
+#controls{
+  padding-top:10px;
+  padding-bottom: 10px;
+}
+
+.normal-mode .select-marker{
+  display: none;
+}
+
+.normal-mode .menu.active{
+  display: none;
+}
+
+.select-mode .menu.inactive{
+  display: none;
+}

@@ -43,20 +43,14 @@ function save(req, res){
 function remove(req, res){
 
 	var model = req.models[req.body.model];
-	var data = req.body.item;
+	var data = req.body.data;
 
-	model.find(data, findCallBack);
+	var ids = data.map(function(entry){return entry.id});
 
-	function findCallBack(err, results){
-		errHandler(err, res)
-		if(results.length){
-			results[0].remove(removeCallBack);
-		}else{
-			removeCallBack(err);
-		}
-	}
+	model.find({"id": ids}).remove(removeCallBack);
 
 	function removeCallBack(err){
+			errHandler(err, res)
 			res.status(200).send();
 	}
 

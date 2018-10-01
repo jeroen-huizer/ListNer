@@ -12,7 +12,7 @@
         <p>
         <div class="input-group input-group-lg">
           <div class="input-group-btn">
-            <button id="recordbutton" class="btn btn-primary" type="button"><i class="fa fa-microphone"></i></button>
+            <button id="recordbutton" class="btn btn-primary" type="button" title="Activeer microfoon"><i class="fa fa-microphone"></i></button>
           </div>
           <input id="maininput" type="text" class="form-control" placeholder="Wat wil je toevoegen?" aria-describedby="sizing-addon1" data-role="none">
         </div>
@@ -21,6 +21,39 @@
         <!-- List container -->
         <div id="list" class="well well-sm text-left">
 
+
+          <!-- Controls -->
+          <div id="controls" class="text-center container-fluid">
+
+            <div class="row menu active">
+              <div class="col-sm-4">
+                <a href="javascript:void(0)" id="closemenu" title="Sluit het menu">
+                  <span class="glyphicon glyphicon-arrow-left"><span>
+                </a>
+              </div>
+
+              <div class="col-sm-4">
+                <a href="javascript:void(0)" id="selectall" title="Selecteer alle items">
+                  <span class="glyphicon glyphicon-ok"><span>
+                </a>
+              </div>
+
+              <div class="col-sm-4">
+                <a href="javascript:void(0)" id="trashbutton" title="Verwijder geselecteerde items">
+                  <span class="glyphicon glyphicon-trash"><span>
+                </a>
+              </div>
+            </div>
+
+            <div class="row menu inactive">
+              <div class="col-sm-12">
+                <a href="javascript:void(0)" id="openmenu" title="Open het menu">
+                  <span class="glyphicon glyphicon-menu-hamburger"><span>
+                </a>
+              </div>
+            </div>
+
+          </div>
         </div>
 
       </div>
@@ -41,8 +74,7 @@
       core.views = core.views || {};
 
       // Create views
-      var listView = core.views.listView = new core.ListView();
-      var itemView = core.views.itemView = new core.ItemView(core.views.listView);
+      var itemView = core.views.itemView = new core.ItemView();
 
 
       // Load a list
@@ -58,9 +90,9 @@
 
         // Update the views
         for(i in list.items){
-          itemView.renderNewItem(list.items[i]);
+          itemView.render(list.items[i]);
         }
-        listView.sort();
+        itemView.sort();
 
         // Attach speech recognition to list
         core.tools.listner = new core.listner(listnerCallBack);
@@ -74,21 +106,18 @@
 
           if(existingItem){
             core.data.list.add(existingItem);
-            core.views.itemView.renderUpdatedItem(existingItem);
+            core.views.itemView.render(existingItem);
             existingItem.commit();
           }
           else{
             core.data.list.add(newItem);
-            core.views.itemView.renderNewItem(newItem);
+            core.views.itemView.render(newItem);
             newItem.commit();
           }
 
-          core.views.listView.sort();
+          core.views.itemView.sort();
         }
 
       });
     })(core);
-
-
-
 </script>
