@@ -25,7 +25,7 @@ app.engine('.hbs', handleBars )
 app.use(express.static(__dirname + '/web/static'));
 app.use(database);
 
-app.get('/', (req, res) => {res.render('pages/home');});
+app.get('/', (req, res) => {res.render('pages/list');});
 app.get('/contact', (req, res) => {res.render('pages/contact');});
 app.get('/stop', (req, res) => {console.log('Stop requested'); process.exit(0)});
 app.use("/action", bodyparser.json(), actionHandler);
