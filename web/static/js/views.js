@@ -157,15 +157,18 @@
 				break;
 			}
 
-			item.commit();
+			item.commit(function(){
+				core.views.itemView.render(item);
+				core.views.itemView.sort();
+			});
 		}
 
 		if(mode == 'select'){
 			item.selected = !item.selected;
+			core.views.itemView.render(item);
+			// core.views.itemView.sort();
 		}
 
-		core.views.itemView.render(item);
-		core.views.itemView.sort();
 	}
 
 	function swipeItemRight(e){
