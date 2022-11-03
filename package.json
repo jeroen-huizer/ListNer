@@ -18,7 +18,7 @@
     "pg": "^6.1.5"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "mustache": "^3.0.0",
     "nodemon": "^1.18.4"
   }
